@@ -1,14 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_app/inherit/counter_provider.dart';
+import 'package:flutter_state_app/models/app_config.dart';
 import 'package:flutter_state_app/pages/home_page.dart';
-
-import 'providers/counter_change_notifier.dart';
+import 'package:flutter_state_app/pages/student_page.dart';
+import 'package:flutter_state_app/providers/person_provider.dart';
+import 'package:flutter_state_app/providers/student_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    CounterProvider(
-      notifier: CounterNotifier(), // initialize the provider
-      appName: 'Inherited Widget update',
+    // Provider<PersonProvider>(
+    //   create: (context) => PersonProvider(),
+    //   child: Provider<StudentProvider>(
+    //     create: (context) => StudentProvider(),
+    //     child: MyApp(),
+    //   ),
+    // ),
+
+    MultiProvider(
+      providers: [
+        Provider<AppConfig>(
+          create: (context) => AppConfig(appName: "Instinct App"),
+        ),
+        ChangeNotifierProvider<PersonProvider>(
+          create: (context) => PersonProvider(),
+        ),
+        ChangeNotifierProvider<StudentProvider>(
+          create: (context) => StudentProvider(),
+        ),
+      ],
       child: MyApp(),
     ),
   );
@@ -24,7 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: StudentPage(),
     );
   }
 }

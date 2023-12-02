@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../inherit/counter_provider.dart';
+import '../models/app_config.dart';
+import '../providers/person_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,45 +13,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    var counterProvider =
-        CounterProvider.of(context).notifier; // instance of CounterNotifier
-    counterProvider.addListener(onCounterChange);
-    super.didChangeDependencies();
-  }
-
-  void onCounterChange() {
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    var counterProvider =
-        CounterProvider.of(context).notifier; // instance of CounterNotifier
-    counterProvider.removeListener(onCounterChange);
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    var counterProvider =
-        CounterProvider.of(context).notifier; // instance of CounterNotifier
     return Scaffold(
       appBar: AppBar(
-        title: Text(CounterProvider.of(context).appName),
+        title: Text(
+            'App Name: ${Provider.of<AppConfig>(context, listen: false).appName}'),
       ),
       body: Center(
         child: Column(
           children: [
-            Text('Counter: ${counterProvider.counter}'),
+            Text(
+                'Person name: ${Provider.of<PersonProvider>(context, listen: false).email}'),
             Container(
               height: 100,
               width: 100,
@@ -58,11 +34,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('Counter1: ${counterProvider.counter}');
-          counterProvider.incrementCounter = counterProvider.counter + 1;
-          print('Counter2: ${counterProvider.counter}');
-        },
+        onPressed: () {},
         child: Icon(Icons.add),
       ),
     );
