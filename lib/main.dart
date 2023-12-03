@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_app/models/app_config.dart';
+import 'package:flutter_state_app/pages/course_page.dart';
 import 'package:flutter_state_app/pages/home_page.dart';
 import 'package:flutter_state_app/pages/student_page.dart';
+import 'package:flutter_state_app/providers/course_provider.dart';
 import 'package:flutter_state_app/providers/person_provider.dart';
 import 'package:flutter_state_app/providers/student_provider.dart';
 import 'package:flutter_state_app/providers/theme_provider.dart';
@@ -29,6 +31,9 @@ void main() {
         ChangeNotifierProvider<StudentProvider>(
           create: (context) => StudentProvider(),
         ),
+        ChangeNotifierProvider<CourseProvider>(
+          create: (context) => CourseProvider(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -51,9 +56,10 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             colorScheme: darkColorScheme,
           ),
-          themeMode:
-              themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-          home: StudentPage(),
+          // themeMode:
+          //     themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          themeMode: ThemeMode.system,
+          home: CoursePage(),
         );
       },
     );
