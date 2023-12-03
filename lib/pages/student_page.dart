@@ -3,6 +3,7 @@ import 'package:flutter_state_app/providers/student_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../models/student.dart';
+import '../providers/theme_provider.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -18,9 +19,18 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Student list'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              themeProvider.toggleTheme();
+            },
+            icon: Icon(Icons.brightness_4),
+          ),
+        ],
       ),
       body: Consumer<StudentProvider>(
         builder: (BuildContext context, provider, Widget? child) {
@@ -38,7 +48,7 @@ class _StudentPageState extends State<StudentPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showAddStudentForm(context);
+          _showAddStudentForm();
         },
         child: Icon(Icons.add),
       ),
@@ -46,7 +56,7 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   // add student form
-  void _showAddStudentForm(BuildContext context) {
+  void _showAddStudentForm() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -66,7 +76,7 @@ class _StudentPageState extends State<StudentPage> {
             ),
             TextButton(
               onPressed: () {
-                _addStudent(context);
+                _addStudent();
               },
               child: Text('Save'),
             ),
@@ -76,7 +86,7 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
-  void _addStudent(BuildContext context) {
+  void _addStudent() {
     final provider = Provider.of<StudentProvider>(
       context,
       listen: false,

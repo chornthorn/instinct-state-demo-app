@@ -4,20 +4,22 @@ import 'package:flutter_state_app/pages/home_page.dart';
 import 'package:flutter_state_app/pages/student_page.dart';
 import 'package:flutter_state_app/providers/person_provider.dart';
 import 'package:flutter_state_app/providers/student_provider.dart';
+import 'package:flutter_state_app/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'common/themes/color_schemes.g.dart';
+import 'providers/language_provider.dart';
 
 void main() {
   runApp(
-    // Provider<PersonProvider>(
-    //   create: (context) => PersonProvider(),
-    //   child: Provider<StudentProvider>(
-    //     create: (context) => StudentProvider(),
-    //     child: MyApp(),
-    //   ),
-    // ),
-
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<LanguageProvider>(
+          create: (context) => LanguageProvider()..init(),
+        ),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider()..init(),
+        ),
         Provider<AppConfig>(
           create: (context) => AppConfig(appName: "Instinct App"),
         ),
@@ -38,12 +40,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: StudentPage(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightColorScheme,
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: darkColorScheme,
+          ),
+          themeMode:
+              themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          home: StudentPage(),
+        );
+      },
     );
   }
 }
